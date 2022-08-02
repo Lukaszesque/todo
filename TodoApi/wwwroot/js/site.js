@@ -49,3 +49,38 @@ function displayEditForm(id) {
     document.getElementById('editForm').style.display = 'block';
 }
 
+function updateItem() {
+    const itemId = document.getElementById('edit-id').value;
+    const item = {
+        id: parseInt(itemId, 10),
+        isComplete: document.getElementById('edit-isComplete').checked,
+        name: document.getElementById('edit-name').value.trim()
+    };
+
+    fetch('${uri}/${itemID}', {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    })
+        .then(() => getItems())
+        .catch(error => console.error('Unable to update item.', error));
+
+    closeInput();
+
+    return false
+}
+
+function closeInput() {
+    document.getElementById('editForm').style.display = 'none';
+}
+
+function _displayCount(itemCount) {
+    const name = (itemCount === 1) ? 'to-do' : 'to-dos';
+
+    document.getElementById('counter').innerText = '${itemCount} ${name}';
+}
+
+
